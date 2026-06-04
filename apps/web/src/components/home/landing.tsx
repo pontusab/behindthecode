@@ -136,7 +136,7 @@ function MetallicSurface() {
   );
 }
 
-/* ── Metallic "Start free" pill button (demo) ──────────────── */
+/* ── Metallic "Demo" pill button ───────────────────────────── */
 export function MetallicButton({ href }: { href: string }) {
   return (
     <BuyNow
@@ -145,7 +145,7 @@ export function MetallicButton({ href }: { href: string }) {
     >
       <MetallicSurface />
       <span className="relative z-10 text-[#121212]/55 [text-shadow:0_0.5px_0_rgba(255,255,255,0.5)]">
-        Start free
+        Demo
       </span>
       <ArrowForwardIcon className="relative z-10 size-3.5 text-[#121212]/55" />
     </BuyNow>
@@ -157,13 +157,13 @@ export function MetallicKnob({ href }: { href: string }) {
   return (
     <BuyNow
       fallbackHref={href}
-      ariaLabel="Start free"
+      ariaLabel="Demo"
       className="metallic-knob relative grid size-[100px] shrink-0 place-items-center rounded-[999px] transition-transform hover:scale-[1.03]"
     >
       <span className="absolute inset-0 rounded-[999px] bg-[url('/metallic/knob-disc.png')] bg-cover bg-center dark:bg-[url('/metallic/knob-disc-dark.png')]" />
       <span className="pointer-events-none absolute inset-0 rounded-[999px] bg-[url('/metallic/knob-top.png')] bg-cover bg-center opacity-70" />
       <span className="relative z-10 text-[13px] font-medium text-[#121212]/60 [text-shadow:0_0.5px_0_rgba(255,255,255,0.6)]">
-        Free
+        Demo
       </span>
     </BuyNow>
   );

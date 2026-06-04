@@ -71,7 +71,7 @@ export function MobileMenu() {
                 onStart={() => setOpen(false)}
                 className="mt-8 flex w-full items-center justify-center gap-2 rounded-[80px] bg-btc-text py-4 text-[16px] font-medium text-btc-bg"
               >
-                Start free
+                Demo
                 <ArrowForwardIcon className="size-4" />
               </BuyNow>
 
