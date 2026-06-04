@@ -136,7 +136,7 @@ function MetallicSurface() {
   );
 }
 
-/* ── Metallic "Buy now" pill button ────────────────────────── */
+/* ── Metallic "Start free" pill button (demo) ──────────────── */
 export function MetallicButton({ href }: { href: string }) {
   return (
     <BuyNow
@@ -145,7 +145,7 @@ export function MetallicButton({ href }: { href: string }) {
     >
       <MetallicSurface />
       <span className="relative z-10 text-[#121212]/55 [text-shadow:0_0.5px_0_rgba(255,255,255,0.5)]">
-        Buy now
+        Start free
       </span>
       <ArrowForwardIcon className="relative z-10 size-3.5 text-[#121212]/55" />
     </BuyNow>
@@ -157,13 +157,13 @@ export function MetallicKnob({ href }: { href: string }) {
   return (
     <BuyNow
       fallbackHref={href}
-      ariaLabel="Buy now"
+      ariaLabel="Start free"
       className="metallic-knob relative grid size-[100px] shrink-0 place-items-center rounded-[999px] transition-transform hover:scale-[1.03]"
     >
       <span className="absolute inset-0 rounded-[999px] bg-[url('/metallic/knob-disc.png')] bg-cover bg-center dark:bg-[url('/metallic/knob-disc-dark.png')]" />
       <span className="pointer-events-none absolute inset-0 rounded-[999px] bg-[url('/metallic/knob-top.png')] bg-cover bg-center opacity-70" />
       <span className="relative z-10 text-[13px] font-medium text-[#121212]/60 [text-shadow:0_0.5px_0_rgba(255,255,255,0.6)]">
-        Buy now
+        Free
       </span>
     </BuyNow>
   );
@@ -194,15 +194,15 @@ export function LandingHero({ tagline }: { tagline: string }) {
             <div className="flex flex-col gap-2">
               <div className="flex items-end gap-2 border-b border-btc-border pb-2">
                 <span className="font-mono text-[20px] font-medium leading-none text-btc-text">
-                  $149
+                  Free
                 </span>
                 <span className="font-mono text-[13px] leading-none text-btc-faint">
-                  One time payment
+                  Demo access
                 </span>
               </div>
               <div className="text-[14px] leading-[1.3] text-btc-text">
                 <p>Watch everything.</p>
-                <p>Forever.</p>
+                <p>No payment required.</p>
               </div>
             </div>
           </div>
