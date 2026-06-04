@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Hedvig_Letters_Serif } from "next/font/google";
+import { Suspense } from "react";
 import { DeployBanner } from "@/components/home/deploy-banner";
 import "./globals.css";
 
@@ -50,7 +51,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${hedvigSerif.variable} antialiased`}
       >
         <ThemeProvider>
-          <DeployBanner />
+          <Suspense fallback={null}>
+            <DeployBanner />
+          </Suspense>
           {children}
           <Toaster />
         </ThemeProvider>

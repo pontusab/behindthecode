@@ -3,9 +3,11 @@ import {
   type UserRow,
 } from "@/components/admin/user-management";
 import { getCurrentUser } from "@/lib/session";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 import { listUsers } from "@/lib/users";
 
 export default async function AdminUsersPage() {
+  await ensureDynamicRoute();
   const me = await getCurrentUser();
 
   let users: UserRow[] = [];

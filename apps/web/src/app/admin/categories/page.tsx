@@ -3,8 +3,10 @@ import {
   CategoryManager,
   type CategoryRow,
 } from "@/components/admin/category-manager";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 
 export default async function AdminCategoriesPage() {
+  await ensureDynamicRoute();
   const categories = await categoryRepo.listCategories();
   const rows: CategoryRow[] = await Promise.all(
     categories.map(async (c) => ({

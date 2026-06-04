@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { AccountMenu } from "@/components/account-menu";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { monetizationEnabled } from "@/lib/entitlements";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 import { requireAdmin } from "@/lib/session";
 
 export default function AdminLayout({
@@ -26,6 +27,7 @@ async function AdminLayoutContent({
 }: {
   children: React.ReactNode;
 }) {
+  await ensureDynamicRoute();
   await requireAdmin();
 
   return (

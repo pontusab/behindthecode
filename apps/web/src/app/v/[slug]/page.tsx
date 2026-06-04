@@ -20,16 +20,26 @@ import { ViewBeacon } from "@/components/watch/view-beacon";
 import {
   getCategoryByIdCached,
   getFeed,
+  getPublishedVideoSlugsCached,
   getSettingsCached,
   getVideoBySlugCached,
   toMediaItem,
 } from "@/lib/catalog";
 import { resolveWatchAccess } from "@/lib/entitlements";
+import {
+  isBuildValidationSlug,
+  withBuildValidationSlug,
+} from "@/lib/static-params";
 import { getCurrentUser } from "@/lib/session";
 
 const PLAYER_SKELETON = (
   <div className="aspect-video w-full animate-pulse rounded-lg bg-btc-surface" />
 );
+
+export async function generateStaticParams() {
+  const slugs = await getPublishedVideoSlugsCached();
+  return withBuildValidationSlug(slugs);
+}
 
 export async function generateMetadata({
   params,
@@ -99,6 +109,7 @@ async function VideoContent({
 }
 
 async function videoContent(slug: string) {
+  if (isBuildValidationSlug(slug)) notFound();
   const video = await getVideoBySlugCached(slug);
   if (!video || video.publishStatus !== "published") notFound();
 

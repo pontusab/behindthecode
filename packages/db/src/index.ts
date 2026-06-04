@@ -1,5 +1,5 @@
 export { cacheTags } from "./cache-tags";
-export { type Db, getDb } from "./client";
+export { type Db, getDb, isDbConfigured } from "./client";
 export type { Database } from "./database.types";
 export { newId, slugify, tokenize } from "./id";
 export {

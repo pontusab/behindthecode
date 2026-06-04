@@ -12,6 +12,7 @@ import {
 } from "@btc/ui/components/table";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 
 const STATUS_VARIANT: Record<
   PublishStatus,
@@ -34,6 +35,7 @@ export default async function AdminVideosPage({
 }: {
   searchParams: Promise<{ status?: string; q?: string }>;
 }) {
+  await ensureDynamicRoute();
   const { status = "all", q } = await searchParams;
   const page = await videoRepo.listAdminVideos({
     status: status === "all" ? undefined : (status as PublishStatus),

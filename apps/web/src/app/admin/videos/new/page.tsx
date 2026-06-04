@@ -1,7 +1,9 @@
 import { UploadVideo } from "@/components/admin/upload-video";
 import { monetizationEnabled } from "@/lib/entitlements";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 
 export default async function NewVideoPage() {
+  await ensureDynamicRoute();
   return (
     <div className="space-y-6">
       <div>

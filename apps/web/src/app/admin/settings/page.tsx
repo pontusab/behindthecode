@@ -1,7 +1,9 @@
 import { settingsRepo } from "@btc/db";
 import { SettingsForm } from "@/components/admin/settings-form";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 
 export default async function AdminSettingsPage() {
+  await ensureDynamicRoute();
   const settings = await settingsRepo.getSettings();
   return (
     <div className="space-y-6">

@@ -3,8 +3,10 @@ import {
   CommentModeration,
   type ModComment,
 } from "@/components/admin/comment-moderation";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 
 export default async function AdminCommentsPage() {
+  await ensureDynamicRoute();
   const flagged = await commentRepo.listFlaggedComments(0, 100);
   const comments: ModComment[] = flagged.map((c) => ({
     id: c.id,

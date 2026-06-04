@@ -1,10 +1,23 @@
-import { categoryRepo, type VideoSort } from "@btc/db";
+import { type VideoSort } from "@btc/db";
 import { VideoGrid, VideoGridSkeleton } from "@btc/ui/components/video-grid";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { SortTabs } from "@/components/sort-tabs";
-import { getFeed } from "@/lib/catalog";
+import {
+  getCategoryBySlugCached,
+  getCategorySlugsCached,
+  getFeed,
+} from "@/lib/catalog";
+import {
+  isBuildValidationSlug,
+  withBuildValidationSlug,
+} from "@/lib/static-params";
+
+export async function generateStaticParams() {
+  const slugs = await getCategorySlugsCached();
+  return withBuildValidationSlug(slugs);
+}
 
 export async function generateMetadata({
   params,
@@ -12,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const category = await categoryRepo.getCategoryBySlug(slug);
+  const category = await getCategoryBySlugCached(slug);
   if (!category) return {};
   return {
     title: category.name,
@@ -28,7 +41,8 @@ export default async function CategoryPage({
   searchParams: Promise<{ sort?: string }>;
 }) {
   const { slug } = await params;
-  const category = await categoryRepo.getCategoryBySlug(slug);
+  if (isBuildValidationSlug(slug)) notFound();
+  const category = await getCategoryBySlugCached(slug);
   if (!category) notFound();
 
   return (

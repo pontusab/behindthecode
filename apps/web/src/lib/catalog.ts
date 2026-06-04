@@ -1,6 +1,8 @@
 import {
   cacheTags,
   categoryRepo,
+  defaultSettings,
+  isDbConfigured,
   settingsRepo,
   type Video,
   type VideoSort,
@@ -34,6 +36,7 @@ export async function getSettingsCached() {
   "use cache";
   cacheTag(cacheTags.settings);
   cacheLife("hours");
+  if (!isDbConfigured()) return defaultSettings;
   return settingsRepo.getSettings();
 }
 
@@ -41,7 +44,16 @@ export async function getCategoriesCached() {
   "use cache";
   cacheTag(cacheTags.categories);
   cacheLife("hours");
+  if (!isDbConfigured()) return [];
   return categoryRepo.listCategories();
+}
+
+export async function getCategoryBySlugCached(slug: string) {
+  "use cache";
+  cacheTag(cacheTags.categories);
+  cacheLife("hours");
+  if (!isDbConfigured()) return null;
+  return categoryRepo.getCategoryBySlug(slug);
 }
 
 export async function getCategoryMap(): Promise<Record<string, string>> {
@@ -83,6 +95,10 @@ export async function getFeed(opts: {
   if (opts.tag) cacheTag(cacheTags.tag(opts.tag));
   cacheLife("minutes");
 
+  if (!isDbConfigured()) {
+    return { items: [], total: 0, hasMore: false, nextOffset: 0 };
+  }
+
   const page = await videoRepo.listPublished(opts);
   const items = await withCategoryNames(page.items);
   return {
@@ -99,5 +115,22 @@ export async function getVideoBySlugCached(
   "use cache";
   cacheTag(cacheTags.videoSlug(slug));
   cacheLife("hours");
+  if (!isDbConfigured()) return null;
   return videoRepo.getVideoBySlug(slug);
+}
+
+/** Slugs for published videos — used by generateStaticParams at build time. */
+export async function getPublishedVideoSlugsCached(): Promise<string[]> {
+  "use cache";
+  cacheTag(cacheTags.videos);
+  cacheLife("hours");
+  if (!isDbConfigured()) return [];
+  const page = await videoRepo.listPublished({ limit: 500, sort: "recent" });
+  return page.items.map((v) => v.slug);
+}
+
+/** Category slugs — used by generateStaticParams at build time. */
+export async function getCategorySlugsCached(): Promise<string[]> {
+  const categories = await getCategoriesCached();
+  return categories.map((c) => c.slug);
 }

@@ -5,6 +5,14 @@ export type Db = SupabaseClient<Database>;
 
 let client: Db | null = null;
 
+/** True when the server-side Supabase credentials are present. */
+export function isDbConfigured(): boolean {
+  const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
+  return Boolean(url && key);
+}
+
 /**
  * Service-role Supabase client for server-side data access.
  *

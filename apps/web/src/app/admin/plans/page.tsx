@@ -1,8 +1,10 @@
 import { planRepo } from "@btc/db";
 import { PlanManager } from "@/components/admin/plan-manager";
 import { monetizationEnabled } from "@/lib/entitlements";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 
 export default async function AdminPlansPage() {
+  await ensureDynamicRoute();
   const plans = await planRepo.listPlans();
 
   return (

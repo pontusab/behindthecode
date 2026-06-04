@@ -10,6 +10,7 @@ import { StatCard } from "@btc/ui/components/stat-card";
 import { Flag } from "lucide-react";
 import Link from "next/link";
 import { ViewsChart } from "@/components/admin/views-chart";
+import { ensureDynamicRoute } from "@/lib/dynamic-route";
 import { listRecentMembers } from "@/lib/users";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -19,6 +20,7 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 export default async function AdminDashboard() {
+  await ensureDynamicRoute();
   const [stats, series, top, recentComments, recentVideos, recentMembers] =
     await Promise.all([
       statsRepo.getDashboardStats(),
