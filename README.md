@@ -1,5 +1,7 @@
 # BehindTheCode
 
+![Behind The Code — open-source video platform](./.github/hero.png)
+
 A polished, open-source, single-publisher video platform — think a Netflix-clean
 brand channel rather than a community site. Built with Next.js 16 (Cache
 Components), Mux, Supabase (Postgres + Auth + Storage), a minimal monochrome

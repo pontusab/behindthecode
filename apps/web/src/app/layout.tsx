@@ -28,6 +28,17 @@ export const metadata: Metadata = {
     template: "%s · Behind The Code",
   },
   description: "A beautiful, single-publisher video platform.",
+  openGraph: {
+    title: "Behind The Code",
+    description: "A beautiful, single-publisher video platform.",
+    siteName: "Behind The Code",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Behind The Code",
+    description: "A beautiful, single-publisher video platform.",
+  },
 };
 
 export default function RootLayout({
