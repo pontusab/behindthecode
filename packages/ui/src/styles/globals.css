@@ -1,0 +1,265 @@
+/* Dark mode driven by next-themes (class strategy) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ───────────────────────────────────────────────────────────
+   BehindTheCode design tokens — clean Scandinavian system.
+   Strictly monochrome (no hue), flat surfaces, zero radius,
+   generous whitespace, hairline borders.
+   ─────────────────────────────────────────────────────────── */
+:root {
+  --radius: 0;
+
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.18 0 0);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0 0);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0 0);
+
+  --primary: oklch(0.2 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.22 0 0);
+
+  --muted: oklch(0.965 0 0);
+  --muted-foreground: oklch(0.48 0 0);
+
+  --accent: oklch(0.95 0 0);
+  --accent-foreground: oklch(0.2 0 0);
+
+  --destructive: oklch(0.42 0 0);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.88 0 0);
+  --ring: oklch(0.6 0 0);
+
+  --success: oklch(0.45 0 0);
+  --warning: oklch(0.55 0 0);
+
+  /* Flat surfaces (kept as token names for compatibility) */
+  --glass: oklch(1 0 0);
+  --glass-border: oklch(0.9 0 0);
+  --glass-highlight: transparent;
+
+  --chart-1: oklch(0.2 0 0);
+  --chart-2: oklch(0.38 0 0);
+  --chart-3: oklch(0.55 0 0);
+  --chart-4: oklch(0.7 0 0);
+  --chart-5: oklch(0.82 0 0);
+
+  --sidebar: oklch(0.99 0 0);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+.dark {
+  --background: oklch(0.15 0 0);
+  --foreground: oklch(0.96 0 0);
+
+  --card: oklch(0.18 0 0);
+  --card-foreground: oklch(0.96 0 0);
+
+  --popover: oklch(0.18 0 0);
+  --popover-foreground: oklch(0.96 0 0);
+
+  --primary: oklch(0.96 0 0);
+  --primary-foreground: oklch(0.16 0 0);
+
+  --secondary: oklch(0.24 0 0);
+  --secondary-foreground: oklch(0.96 0 0);
+
+  --muted: oklch(0.22 0 0);
+  --muted-foreground: oklch(0.66 0 0);
+
+  --accent: oklch(0.26 0 0);
+  --accent-foreground: oklch(0.96 0 0);
+
+  --destructive: oklch(0.7 0 0);
+  --destructive-foreground: oklch(0.16 0 0);
+
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.32 0 0);
+  --ring: oklch(0.55 0 0);
+
+  --success: oklch(0.72 0 0);
+  --warning: oklch(0.7 0 0);
+
+  --glass: oklch(0.18 0 0);
+  --glass-border: oklch(0.3 0 0);
+  --glass-highlight: transparent;
+
+  --chart-1: oklch(0.96 0 0);
+  --chart-2: oklch(0.78 0 0);
+  --chart-3: oklch(0.6 0 0);
+  --chart-4: oklch(0.45 0 0);
+  --chart-5: oklch(0.32 0 0);
+
+  --sidebar: oklch(0.16 0 0);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* No rounding anywhere */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-4xl: 0;
+  --radius-full: 0;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  /* Enforce flat, sharp corners everywhere (Scandinavian) */
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+}
+
+@layer components {
+  /* Flat surface — replaces the former frosted glass look */
+  .glass {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+  }
+  .glass-panel {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+  }
+  /* Decorative glow removed for a clean, flat aesthetic */
+  .ambient-glow {
+    background: var(--color-muted);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Tiptap editor content */
+  .prose-editor :where(h2) {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0.8em 0 0.3em;
+  }
+  .prose-editor :where(h3) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0.7em 0 0.3em;
+  }
+  .prose-editor :where(p) {
+    margin: 0.5em 0;
+    line-height: 1.7;
+  }
+  .prose-editor :where(ul) {
+    list-style: disc;
+    margin: 0.5em 0;
+    padding-left: 1.4em;
+  }
+  .prose-editor :where(ol) {
+    list-style: decimal;
+    margin: 0.5em 0;
+    padding-left: 1.4em;
+  }
+  .prose-editor :where(blockquote) {
+    border-left: 2px solid var(--color-border);
+    padding-left: 1em;
+    color: var(--color-muted-foreground);
+    margin: 0.6em 0;
+  }
+  .prose-editor :where(a) {
+    color: var(--color-foreground);
+    text-decoration: underline;
+  }
+  .prose-editor :where(p.is-editor-empty:first-child::before) {
+    content: attr(data-placeholder);
+    color: var(--color-muted-foreground);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
