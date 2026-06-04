@@ -31,12 +31,6 @@ export function PillNav() {
         Live
       </Link>
       <Link
-        href="/pricing"
-        className="text-[14px] font-medium text-btc-text/90 transition-colors hover:text-btc-text"
-      >
-        Pricing
-      </Link>
-      <Link
         href="/login"
         className="border-r border-btc-border pr-5 text-[14px] font-medium text-btc-text/90 transition-colors hover:text-btc-text"
       >
@@ -158,7 +152,7 @@ export function MetallicButton({ href }: { href: string }) {
   );
 }
 
-/* ── Metallic circular knob (pricing card) ─────────────────── */
+/* ── Metallic circular knob (hero offer card) ──────────────── */
 export function MetallicKnob({ href }: { href: string }) {
   return (
     <BuyNow
@@ -193,7 +187,7 @@ export function LandingHero({ tagline }: { tagline: string }) {
 
         <div className="mt-16 flex flex-wrap items-end justify-between gap-x-8 gap-y-10">
           <div
-            id="pricing"
+            id="offer"
             className="flex h-[120px] scroll-mt-24 items-center gap-8 rounded-[120px] border border-btc-border bg-btc-surface pl-[10px] pr-14"
           >
             <MetallicKnob href="/login" />
@@ -257,12 +251,6 @@ export function LandingFooter({ siteName }: { siteName: string }) {
             © <CurrentYear /> {siteName}
           </p>
           <div className="flex items-center gap-6 text-[13px] text-btc-muted">
-            <Link
-              href="/pricing"
-              className="transition-colors hover:text-btc-text"
-            >
-              Pricing
-            </Link>
             <Link
               href="/about"
               className="transition-colors hover:text-btc-text"

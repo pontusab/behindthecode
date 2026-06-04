@@ -7,10 +7,7 @@ import { BuyNow } from "@/components/home/buy-now";
 import { ArrowForwardIcon, CloseIcon, MenuIcon } from "@/components/home/icons";
 import { ThemeToggle } from "@/components/home/theme-toggle";
 
-const LINKS = [
-  { href: "/pricing", label: "Pricing" },
-  { href: "/login", label: "Sign in" },
-];
+const LINKS = [{ href: "/login", label: "Sign in" }];
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
