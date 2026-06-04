@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { BrandHeader, LandingFooter } from "@/components/home/landing";
+import { getSettingsCached } from "@/lib/catalog";
 
 export default function SiteLayout({
   children,
@@ -8,16 +8,17 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Suspense
-        fallback={<div className="h-16 border-b border-glass-border" />}
-      >
-        <SiteHeader />
-      </Suspense>
+    <div className="flex min-h-screen flex-col bg-btc-bg font-sans text-btc-text antialiased">
+      <BrandHeader />
       <main className="flex-1">{children}</main>
       <Suspense fallback={null}>
         <SiteFooter />
       </Suspense>
     </div>
   );
+}
+
+async function SiteFooter() {
+  const settings = await getSettingsCached();
+  return <LandingFooter siteName={settings.siteName} />;
 }

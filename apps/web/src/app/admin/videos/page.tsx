@@ -12,7 +12,6 @@ import {
 } from "@btc/ui/components/table";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/session";
 
 const STATUS_VARIANT: Record<
   PublishStatus,
@@ -35,7 +34,6 @@ export default async function AdminVideosPage({
 }: {
   searchParams: Promise<{ status?: string; q?: string }>;
 }) {
-  await requireAdmin();
   const { status = "all", q } = await searchParams;
   const page = await videoRepo.listAdminVideos({
     status: status === "all" ? undefined : (status as PublishStatus),
@@ -46,7 +44,7 @@ export default async function AdminVideosPage({
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold tracking-tight">Videos</h1>
+        <h1 className="font-serif text-2xl font-medium tracking-tight">Videos</h1>
         <Button asChild variant="gradient">
           <Link href="/admin/videos/new">
             <Plus className="size-4" /> Upload

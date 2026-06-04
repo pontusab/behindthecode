@@ -76,6 +76,31 @@ export async function countComments(videoId: string): Promise<number> {
   return count ?? 0;
 }
 
+export type RecentComment = Comment & {
+  videoTitle: string;
+  videoSlug: string;
+};
+
+/** Most recent comments across all videos (any status), newest first. */
+export async function listRecentComments(
+  limit = 6,
+): Promise<RecentComment[]> {
+  const { data } = await getDb()
+    .from("comments")
+    .select("*, videos(title, slug)")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return (data ?? []).map((row) => {
+    const video = (row as { videos?: { title?: string; slug?: string } | null })
+      .videos;
+    return {
+      ...rowToComment(row),
+      videoTitle: video?.title ?? "",
+      videoSlug: video?.slug ?? "",
+    };
+  });
+}
+
 export async function listFlaggedComments(
   offset = 0,
   limit = 50,

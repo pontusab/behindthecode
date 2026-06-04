@@ -41,7 +41,7 @@ export function CommentModeration({ comments }: { comments: ModComment[] }) {
   if (comments.length === 0) {
     return (
       <div className="glass rounded-xl py-12 text-center text-sm text-muted-foreground">
-        Nothing to review. 🎉
+        Nothing to review.
       </div>
     );
   }

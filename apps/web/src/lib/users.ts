@@ -26,6 +26,31 @@ export async function listUsers(limit = 200): Promise<AdminUser[]> {
   }));
 }
 
+export type RecentMember = {
+  id: string;
+  name: string;
+  email: string;
+  image: string | null;
+  role: string;
+  createdAt: number;
+};
+
+export async function listRecentMembers(limit = 5): Promise<RecentMember[]> {
+  const { data } = await getDb()
+    .from("profiles")
+    .select("id, name, email, image, role, created_at")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return (data ?? []).map((u) => ({
+    id: u.id,
+    name: u.name ?? "",
+    email: u.email ?? "",
+    image: u.image ?? null,
+    role: u.role ?? "user",
+    createdAt: u.created_at ? new Date(u.created_at).getTime() : Date.now(),
+  }));
+}
+
 export async function countAdmins(): Promise<number> {
   const { count } = await getDb()
     .from("profiles")

@@ -2,11 +2,11 @@ import {
   UserManagement,
   type UserRow,
 } from "@/components/admin/user-management";
-import { requireAdmin } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { listUsers } from "@/lib/users";
 
 export default async function AdminUsersPage() {
-  const me = await requireAdmin();
+  const me = await getCurrentUser();
 
   let users: UserRow[] = [];
   try {
@@ -18,12 +18,12 @@ export default async function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Users</h1>
+        <h1 className="font-serif text-2xl font-medium tracking-tight">Users</h1>
         <p className="text-sm text-muted-foreground">
           Manage roles and access. The first user to sign up is an admin.
         </p>
       </div>
-      <UserManagement users={users} currentUserId={me.id} />
+      <UserManagement users={users} currentUserId={me?.id ?? ""} />
     </div>
   );
 }

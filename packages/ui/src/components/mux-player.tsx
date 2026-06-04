@@ -26,6 +26,7 @@ export type MuxPlayerProps = {
   };
   autoPlay?: boolean;
   muted?: boolean;
+  streamType?: "on-demand" | "live";
   className?: string;
 };
 
@@ -39,6 +40,7 @@ export function MuxPlayer({
   metadata,
   autoPlay,
   muted,
+  streamType = "on-demand",
   className,
 }: MuxPlayerProps) {
   const ref = React.useRef<React.ComponentRef<typeof MuxPlayerReact> | null>(
@@ -70,7 +72,7 @@ export function MuxPlayer({
       autoPlay={autoPlay}
       muted={muted}
       accentColor={accentColor}
-      streamType="on-demand"
+      streamType={streamType}
       className={cn(
         "aspect-video w-full overflow-hidden rounded-2xl",
         className,

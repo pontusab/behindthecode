@@ -19,12 +19,13 @@
     "seed:admin": "bun run scripts/seed.ts --admin-only"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.67",
     "@btc/db": "*",
     "@btc/mux": "*",
     "@btc/ui": "*",
-    "@ai-sdk/openai": "^3.0.67",
-    "@mux/mux-uploader-react": "^1.5.0",
     "@mux/mux-player-react": "^3.13.0",
+    "@mux/mux-uploader-react": "^1.5.0",
+    "@polar-sh/sdk": "^0.47.1",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.107.0",
     "@vercel/analytics": "^2.0.1",
@@ -39,8 +40,6 @@
     "react-dom": "^19.2.0",
     "recharts": "^3.8.1",
     "sonner": "^2.0.7",
-    "stripe": "^22.2.0",
-    "@stripe/stripe-js": "^9.7.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

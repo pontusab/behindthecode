@@ -182,7 +182,7 @@ export async function setUserRoleAction(
 export async function createPlanAction(input: {
   name: string;
   description?: string;
-  stripePriceId: string;
+  polarProductId: string;
   interval: PlanInterval;
   amount: number;
   currency: string;

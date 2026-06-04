@@ -39,7 +39,7 @@ export type Database = {
           current_period_end: number | null;
           plan_id: string | null;
           status: string | null;
-          stripe_customer_id: string | null;
+          polar_customer_id: string | null;
           updated_at: string;
           user_id: string;
         };
@@ -47,7 +47,7 @@ export type Database = {
           current_period_end?: number | null;
           plan_id?: string | null;
           status?: string | null;
-          stripe_customer_id?: string | null;
+          polar_customer_id?: string | null;
           updated_at?: string;
           user_id: string;
         };
@@ -55,7 +55,7 @@ export type Database = {
           current_period_end?: number | null;
           plan_id?: string | null;
           status?: string | null;
-          stripe_customer_id?: string | null;
+          polar_customer_id?: string | null;
           updated_at?: string;
           user_id?: string;
         };
@@ -208,7 +208,7 @@ export type Database = {
           id: string;
           interval: string;
           name: string;
-          stripe_price_id: string;
+          polar_product_id: string;
         };
         Insert: {
           amount?: number;
@@ -218,7 +218,7 @@ export type Database = {
           id?: string;
           interval?: string;
           name: string;
-          stripe_price_id: string;
+          polar_product_id: string;
         };
         Update: {
           amount?: number;
@@ -228,7 +228,7 @@ export type Database = {
           id?: string;
           interval?: string;
           name?: string;
-          stripe_price_id?: string;
+          polar_product_id?: string;
         };
         Relationships: [];
       };
@@ -285,7 +285,7 @@ export type Database = {
           amount: number;
           created_at: string;
           currency: string;
-          stripe_payment_id: string | null;
+          polar_order_id: string | null;
           user_id: string;
           video_id: string;
         };
@@ -293,7 +293,7 @@ export type Database = {
           amount?: number;
           created_at?: string;
           currency?: string;
-          stripe_payment_id?: string | null;
+          polar_order_id?: string | null;
           user_id: string;
           video_id: string;
         };
@@ -301,7 +301,7 @@ export type Database = {
           amount?: number;
           created_at?: string;
           currency?: string;
-          stripe_payment_id?: string | null;
+          polar_order_id?: string | null;
           user_id?: string;
           video_id?: string;
         };
@@ -400,7 +400,7 @@ export type Database = {
           required_plan_ids: string[];
           search: unknown | null;
           slug: string;
-          stripe_price_id: string | null;
+          polar_product_id: string | null;
           tags: string[];
           thumbnail_time: number | null;
           title: string;
@@ -431,7 +431,7 @@ export type Database = {
           required_plan_ids?: string[];
           search?: unknown | null;
           slug: string;
-          stripe_price_id?: string | null;
+          polar_product_id?: string | null;
           tags?: string[];
           thumbnail_time?: number | null;
           title: string;
@@ -462,7 +462,7 @@ export type Database = {
           required_plan_ids?: string[];
           search?: unknown | null;
           slug?: string;
-          stripe_price_id?: string | null;
+          polar_product_id?: string | null;
           tags?: string[];
           thumbnail_time?: number | null;
           title?: string;

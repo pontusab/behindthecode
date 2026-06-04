@@ -22,6 +22,7 @@ export type CategoryRow = {
 export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
   const router = useRouter();
   const [name, setName] = React.useState("");
+  const [description, setDescription] = React.useState("");
   const [busy, setBusy] = React.useState<string | null>(null);
 
   async function create(e: React.FormEvent) {
@@ -29,8 +30,12 @@ export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
     if (!name.trim()) return;
     setBusy("create");
     try {
-      await createCategoryAction({ name: name.trim() });
+      await createCategoryAction({
+        name: name.trim(),
+        description: description.trim() || undefined,
+      });
       setName("");
+      setDescription("");
       toast.success("Category created");
       router.refresh();
     } catch {
@@ -55,6 +60,24 @@ export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
     }
   }
 
+  async function editDescription(id: string, current: string) {
+    const next = window.prompt(
+      "Category description (shown on the home page)",
+      current,
+    );
+    if (next === null || next === current) return;
+    setBusy(id);
+    try {
+      await updateCategoryAction(id, { description: next });
+      toast.success("Description updated");
+      router.refresh();
+    } catch {
+      toast.error("Could not update description");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function remove(id: string) {
     if (!confirm("Delete this category? Videos will become uncategorized."))
       return;
@@ -72,12 +95,18 @@ export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
 
   return (
     <div className="space-y-4">
-      <form onSubmit={create} className="flex gap-2">
+      <form onSubmit={create} className="flex flex-wrap gap-2">
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="New category name"
           className="max-w-xs"
+        />
+        <Input
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description (optional, shown on home)"
+          className="min-w-[16rem] flex-1"
         />
         <Button type="submit" variant="gradient" disabled={busy === "create"}>
           {busy === "create" ? (
@@ -97,12 +126,20 @@ export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
         )}
         {categories.map((c) => (
           <div key={c.id} className="flex items-center gap-3 px-4 py-3">
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <button
+                type="button"
                 onClick={() => rename(c.id, c.name)}
                 className="text-left font-medium hover:text-primary"
               >
                 {c.name}
+              </button>
+              <button
+                type="button"
+                onClick={() => editDescription(c.id, c.description)}
+                className="block max-w-full truncate text-left text-xs text-muted-foreground hover:text-primary"
+              >
+                {c.description || "Add a description…"}
               </button>
               <p className="text-xs text-muted-foreground">{c.count} videos</p>
             </div>

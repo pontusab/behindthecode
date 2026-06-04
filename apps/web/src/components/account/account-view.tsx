@@ -66,7 +66,7 @@ export function AccountView({ data }: { data: AccountData }) {
   async function billingAction(endpoint: "checkout" | "portal", body?: object) {
     setBillingBusy(endpoint);
     try {
-      const res = await fetch(`/api/stripe/${endpoint}`, {
+      const res = await fetch(`/api/polar/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: body ? JSON.stringify(body) : undefined,
@@ -198,7 +198,7 @@ export function AccountView({ data }: { data: AccountData }) {
             {data.purchases.map((p) => (
               <Link
                 key={p.videoId}
-                href={`/watch/${p.slug}`}
+                href={`/v/${p.slug}`}
                 className="flex items-center justify-between py-2.5 text-sm hover:text-primary"
               >
                 <span>{p.title}</span>

@@ -1,9 +1,7 @@
 import {
   cacheTags,
   categoryRepo,
-  searchRepo,
   settingsRepo,
-  tagRepo,
   type Video,
   type VideoSort,
   type VideoWithStats,
@@ -51,11 +49,9 @@ export async function getCategoryMap(): Promise<Record<string, string>> {
   return Object.fromEntries(cats.map((c) => [c.id, c.name]));
 }
 
-export async function getTagsCached() {
-  "use cache";
-  cacheTag(cacheTags.tags);
-  cacheLife("hours");
-  return tagRepo.listTags();
+export async function getCategoryByIdCached(id: string) {
+  const cats = await getCategoriesCached();
+  return cats.find((c) => c.id === id) ?? null;
 }
 
 async function withCategoryNames(
@@ -97,26 +93,6 @@ export async function getFeed(opts: {
   };
 }
 
-export async function getCarousel(
-  source: "popular" | "latest",
-  featuredIds: string[],
-  limit = 8,
-): Promise<MediaItem[]> {
-  "use cache";
-  cacheTag(cacheTags.videos);
-  cacheLife("minutes");
-
-  if (featuredIds.length > 0) {
-    const vids = await videoRepo.listPublishedByIds(featuredIds);
-    if (vids.length > 0) return withCategoryNames(vids);
-  }
-  const page = await videoRepo.listPublished({
-    sort: source === "latest" ? "recent" : "popular",
-    limit,
-  });
-  return withCategoryNames(page.items);
-}
-
 export async function getVideoBySlugCached(
   slug: string,
 ): Promise<Video | null> {
@@ -124,20 +100,4 @@ export async function getVideoBySlugCached(
   cacheTag(cacheTags.videoSlug(slug));
   cacheLife("hours");
   return videoRepo.getVideoBySlug(slug);
-}
-
-export async function getRelatedCached(video: Video): Promise<MediaItem[]> {
-  "use cache";
-  cacheTag(cacheTags.videos);
-  cacheTag(cacheTags.video(video.id));
-  cacheLife("minutes");
-  const related = await videoRepo.getRelatedVideos(video);
-  return withCategoryNames(related);
-}
-
-export async function searchVideos(query: string): Promise<MediaItem[]> {
-  const ids = await searchRepo.searchVideoIds(query);
-  if (ids.length === 0) return [];
-  const videos = await videoRepo.listPublishedByIds(ids);
-  return withCategoryNames(videos);
 }

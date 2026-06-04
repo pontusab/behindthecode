@@ -59,6 +59,16 @@
   --sidebar-accent-foreground: var(--accent-foreground);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
+
+  /* Light mode values; dark overrides live in `.dark`. */
+  --btc-bg: #ffffff;
+  --btc-surface: #f9f9fa;
+  --btc-border: #e2e3e7;
+  --btc-text: #121212;
+  --btc-muted: #7b7f83;
+  --btc-faint: #666666;
+  --btc-error: #ec2729;
+  --btc-grid-line: rgba(0, 0, 0, 0.05);
 }
 
 .dark {
@@ -111,6 +121,16 @@
   --sidebar-accent-foreground: var(--accent-foreground);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
+
+  /* Brand palette — dark mode (Figma "Behind the Code" landing). */
+  --btc-bg: #0c0c0c;
+  --btc-surface: #0c0c0c;
+  --btc-border: #1d1d1d;
+  --btc-text: #ffffff;
+  --btc-muted: #7b7f83;
+  --btc-faint: #666666;
+  --btc-error: #ec2729;
+  --btc-grid-line: rgba(255, 255, 255, 0.045);
 }
 
 @theme inline {
@@ -138,6 +158,14 @@
   --color-glass: var(--glass);
   --color-glass-border: var(--glass-border);
 
+  --color-btc-bg: var(--btc-bg);
+  --color-btc-surface: var(--btc-surface);
+  --color-btc-border: var(--btc-border);
+  --color-btc-text: var(--btc-text);
+  --color-btc-muted: var(--btc-muted);
+  --color-btc-faint: var(--btc-faint);
+  --color-btc-error: var(--btc-error);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -157,6 +185,7 @@
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-hedvig-serif), ui-serif, Georgia, serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -171,12 +200,9 @@
   * {
     border-color: var(--color-border);
   }
-  /* Enforce flat, sharp corners everywhere (Scandinavian) */
-  *,
-  *::before,
-  *::after {
-    border-radius: 0 !important;
-  }
+  /* Radius tokens default to 0 (flat Scandinavian app chrome); individual
+     surfaces opt into rounding with explicit arbitrary radii (e.g. the
+     marketing landing page uses pill shapes). */
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -262,4 +288,120 @@
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Marketing landing (dark, bold, rounded) — Figma "Behind the Code"
+   ─────────────────────────────────────────────────────────── */
+@layer components {
+  /* Faint engineering-grid backdrop behind the hero, fading toward edges. */
+  .hero-grid {
+    background-image:
+      linear-gradient(to right, var(--btc-grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--btc-grid-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(
+      ellipse 95% 75% at 50% 0%,
+      #000 25%,
+      transparent 80%
+    );
+    mask-image: radial-gradient(
+      ellipse 95% 75% at 50% 0%,
+      #000 25%,
+      transparent 80%
+    );
+  }
+
+  /*
+   * Hero headline. Stays on a single line at every width and scales its
+   * font-size to fill the full content box. The vw coefficient is derived from
+   * the measured width/font ratio (8.685) of the uppercase wordmark:
+   * font-size = (100vw - 2·padding) / 8.685 ≈ 11.51vw - padding/8.685·2.
+   * We use 11.5vw (a hair under the exact fit) so it never overflows. The max
+   * cap fills the 1648px content box of the Figma frame (1648/8.685 ≈ 189.7px).
+   */
+  .hero-title {
+    white-space: nowrap;
+    font-size: clamp(1.75rem, calc(11.5vw - 3.69px), 11.86rem);
+  }
+  @media (width >= 40rem) {
+    .hero-title {
+      font-size: clamp(1.75rem, calc(11.5vw - 9.21px), 11.86rem);
+    }
+  }
+
+  /*
+   * Metallic pill ("Buy now" / "Action") — matches the Figma "Growth Hacks"
+   * spec. The brushed sheen is the (identical) skewed SVG radial gradient drawn
+   * by <MetallicSurface>; this class supplies the silver base plus the double
+   * rim (0.5px black outer + 1.5px steel inner) and the layered ambient shadow.
+   *
+   * Figma ships the pill with no opaque base — the semi-transparent gradient
+   * over the page is what makes it read as darker steel on the light theme and
+   * brighter silver on the dark theme. We reproduce both reliably with a
+   * theme-aware base tone (light = default, dark = override below).
+   */
+  .metallic-pill {
+    background: linear-gradient(180deg, #d7dbe0 0%, #a3a9b1 46%, #757b84 100%);
+    border: 1.5px solid rgba(93, 99, 108, 0.94);
+    box-shadow:
+      0 8.322px 6.704px rgba(0, 0, 0, 0.11),
+      0 4.762px 3.836px rgba(0, 0, 0, 0.09),
+      0 2.89px 2.328px rgba(0, 0, 0, 0.08),
+      0 1.742px 1.403px rgba(0, 0, 0, 0.07),
+      0 0.97px 0.781px rgba(0, 0, 0, 0.06),
+      0 0.417px 0.336px rgba(0, 0, 0, 0.04);
+  }
+  .dark .metallic-pill {
+    background: linear-gradient(180deg, #edeff2 0%, #c8cdd3 50%, #abb1b9 100%);
+  }
+
+  /*
+   * Spun-aluminium knob. The disc + top highlight are vendored Figma renders
+   * (public/metallic); this only adds the ambient drop shadow + thin dark rim.
+   */
+  .metallic-knob {
+    box-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.5),
+      0 8px 20px rgba(0, 0, 0, 0.45),
+      0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  /*
+   * Full-width "Deploy your own" ticker. The track holds two identical halves;
+   * translating by -50% loops seamlessly. Pauses on hover and respects
+   * reduced-motion preferences.
+   */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: btc-marquee 70s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+}
+
+@keyframes btc-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/*
+ * Mux player: only the poster (thumbnail) is rendered monochrome and filled to
+ * cover the frame; the controls are already black-and-white via the white accent
+ * color. The actual video footage plays in full color.
+ */
+mux-player::part(poster) {
+  --media-object-fit: cover;
+  filter: grayscale(1);
 }

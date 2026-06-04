@@ -12,10 +12,16 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "127.0.0.1" },
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "@btc/ui"],
+  },
+  async redirects() {
+    return [
+      { source: "/watch/:slug", destination: "/v/:slug", permanent: true },
+    ];
   },
 };
 

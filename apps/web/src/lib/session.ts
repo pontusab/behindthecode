@@ -11,7 +11,7 @@ export type SessionUser = {
   role?: string | null;
   banned?: boolean | null;
   emailVerified?: boolean;
-  stripeCustomerId?: string | null;
+  polarCustomerId?: string | null;
   subscriptionStatus?: string | null;
   subscriptionPlanId?: string | null;
   currentPeriodEnd?: number | null;

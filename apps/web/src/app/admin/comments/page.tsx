@@ -3,10 +3,8 @@ import {
   CommentModeration,
   type ModComment,
 } from "@/components/admin/comment-moderation";
-import { requireAdmin } from "@/lib/session";
 
 export default async function AdminCommentsPage() {
-  await requireAdmin();
   const flagged = await commentRepo.listFlaggedComments(0, 100);
   const comments: ModComment[] = flagged.map((c) => ({
     id: c.id,
@@ -20,7 +18,7 @@ export default async function AdminCommentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
+        <h1 className="font-serif text-2xl font-medium tracking-tight">
           Comment moderation
         </h1>
         <p className="text-sm text-muted-foreground">

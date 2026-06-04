@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { AuthForm } from "@/components/auth-form";
 import { authMethods } from "@/lib/auth-methods";
 
@@ -9,16 +8,14 @@ export default function SignupPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-1 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">
+        <h1 className="text-2xl font-bold tracking-tight text-btc-text">
           Create your account
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-btc-muted">
           Join to like, comment, and follow along.
         </p>
       </div>
-      <Suspense fallback={null}>
-        <AuthForm mode="signup" methods={authMethods} />
-      </Suspense>
+      <AuthForm mode="signup" methods={authMethods} />
     </div>
   );
 }

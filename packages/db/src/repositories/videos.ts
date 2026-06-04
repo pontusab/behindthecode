@@ -118,7 +118,7 @@ export type UpdateVideoInput = Partial<
     | "tags"
     | "access"
     | "requiredPlanIds"
-    | "stripePriceId"
+    | "polarProductId"
     | "priceAmount"
     | "visibility"
     | "thumbnailTime"
@@ -149,8 +149,8 @@ export async function updateVideo(
   if (patch.access !== undefined) update.access = patch.access;
   if (patch.requiredPlanIds !== undefined)
     update.required_plan_ids = patch.requiredPlanIds;
-  if (patch.stripePriceId !== undefined)
-    update.stripe_price_id = patch.stripePriceId;
+  if (patch.polarProductId !== undefined)
+    update.polar_product_id = patch.polarProductId;
   if (patch.priceAmount !== undefined) update.price_amount = patch.priceAmount;
   if (patch.visibility !== undefined) update.visibility = patch.visibility;
   if (patch.thumbnailTime !== undefined)

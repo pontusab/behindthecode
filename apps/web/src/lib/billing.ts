@@ -3,7 +3,7 @@ import { getDb } from "@btc/db";
 
 export type BillingRecord = {
   userId: string;
-  stripeCustomerId: string | null;
+  polarCustomerId: string | null;
   status: string | null; // active | trialing | past_due | canceled | ...
   planId: string | null;
   currentPeriodEnd: number | null; // unix seconds
@@ -12,7 +12,7 @@ export type BillingRecord = {
 
 function rowToRecord(r: {
   user_id: string;
-  stripe_customer_id: string | null;
+  polar_customer_id: string | null;
   status: string | null;
   plan_id: string | null;
   current_period_end: number | null;
@@ -20,7 +20,7 @@ function rowToRecord(r: {
 }): BillingRecord {
   return {
     userId: r.user_id,
-    stripeCustomerId: r.stripe_customer_id,
+    polarCustomerId: r.polar_customer_id,
     status: r.status,
     planId: r.plan_id,
     currentPeriodEnd: r.current_period_end,
@@ -43,7 +43,7 @@ export async function setBilling(record: BillingRecord): Promise<void> {
   await getDb().from("billing").upsert(
     {
       user_id: record.userId,
-      stripe_customer_id: record.stripeCustomerId,
+      polar_customer_id: record.polarCustomerId,
       status: record.status,
       plan_id: record.planId,
       current_period_end: record.currentPeriodEnd,
@@ -60,7 +60,7 @@ export async function linkCustomer(
   await getDb().from("billing").upsert(
     {
       user_id: userId,
-      stripe_customer_id: customerId,
+      polar_customer_id: customerId,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "user_id" },
@@ -73,7 +73,7 @@ export async function getUserIdByCustomer(
   const { data } = await getDb()
     .from("billing")
     .select("user_id")
-    .eq("stripe_customer_id", customerId)
+    .eq("polar_customer_id", customerId)
     .maybeSingle();
   return data?.user_id ?? null;
 }

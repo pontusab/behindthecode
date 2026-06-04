@@ -21,28 +21,28 @@ import { createPlanAction, deletePlanAction } from "@/app/admin/actions";
 export function PlanManager({ plans }: { plans: Plan[] }) {
   const router = useRouter();
   const [name, setName] = React.useState("");
-  const [priceId, setPriceId] = React.useState("");
+  const [productId, setProductId] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const [interval, setInterval] = React.useState<PlanInterval>("month");
   const [busy, setBusy] = React.useState<string | null>(null);
 
   async function create(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim() || !priceId.trim()) {
-      toast.error("Name and Stripe price ID are required");
+    if (!name.trim() || !productId.trim()) {
+      toast.error("Name and Polar product ID are required");
       return;
     }
     setBusy("create");
     try {
       await createPlanAction({
         name: name.trim(),
-        stripePriceId: priceId.trim(),
+        polarProductId: productId.trim(),
         interval,
         amount: Math.round(Number(amount) * 100) || 0,
         currency: "usd",
       });
       setName("");
-      setPriceId("");
+      setProductId("");
       setAmount("");
       toast.success("Plan created");
       router.refresh();
@@ -81,12 +81,12 @@ export function PlanManager({ plans }: { plans: Plan[] }) {
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="price">Stripe price ID</Label>
+              <Label htmlFor="product">Polar product ID</Label>
               <Input
-                id="price"
-                value={priceId}
-                onChange={(e) => setPriceId(e.target.value)}
-                placeholder="price_..."
+                id="product"
+                value={productId}
+                onChange={(e) => setProductId(e.target.value)}
+                placeholder="prod_..."
               />
             </div>
             <div className="space-y-1.5">
@@ -145,7 +145,7 @@ export function PlanManager({ plans }: { plans: Plan[] }) {
             <div className="flex-1">
               <p className="font-medium">{p.name}</p>
               <p className="text-xs text-muted-foreground">
-                ${(p.amount / 100).toFixed(2)}/{p.interval} · {p.stripePriceId}
+                ${(p.amount / 100).toFixed(2)}/{p.interval} · {p.polarProductId}
               </p>
             </div>
             <Button

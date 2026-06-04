@@ -4,8 +4,8 @@ import { getBilling, isActive } from "./billing";
 import type { SessionUser } from "./session";
 
 export const monetizationEnabled =
-  process.env.STRIPE_ENABLED === "true" &&
-  Boolean(process.env.STRIPE_SECRET_KEY);
+  process.env.POLAR_ENABLED === "true" &&
+  Boolean(process.env.POLAR_ACCESS_TOKEN);
 
 export type WatchAccess = {
   allowed: boolean;

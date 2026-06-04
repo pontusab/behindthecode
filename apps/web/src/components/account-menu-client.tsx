@@ -9,9 +9,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@btc/ui/components/dropdown-menu";
-import { LayoutDashboard, LogOut, User as UserIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  LogOut,
+  Moon,
+  Sun,
+  User as UserIcon,
+} from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export function AccountMenuClient({
@@ -26,6 +34,10 @@ export function AccountMenuClient({
   role: string;
 }) {
   const router = useRouter();
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+  const isDark = resolvedTheme === "dark";
 
   const initials = (name || email || "?")
     .split(" ")
@@ -73,6 +85,20 @@ export function AccountMenuClient({
             </Link>
           </DropdownMenuItem>
         )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onSelect={(e) => {
+            e.preventDefault();
+            setTheme(isDark ? "light" : "dark");
+          }}
+        >
+          {mounted && isDark ? (
+            <Sun className="size-4" />
+          ) : (
+            <Moon className="size-4" />
+          )}
+          {mounted && isDark ? "Light mode" : "Dark mode"}
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="size-4" /> Sign out

@@ -38,7 +38,7 @@ export const videoSchema = z.object({
   tags: z.array(z.string()).default([]),
   access: z.enum(accessLevels).default("free"),
   requiredPlanIds: z.array(z.string()).default([]),
-  stripePriceId: z.string().nullable().default(null),
+  polarProductId: z.string().nullable().default(null),
   priceAmount: z.number().nullable().default(null),
   visibility: z.enum(visibilities).default("public"),
   createdAt: z.number(),
@@ -110,7 +110,7 @@ export const planSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().default(""),
-  stripePriceId: z.string(),
+  polarProductId: z.string(),
   interval: z.enum(planIntervals).default("month"),
   amount: z.number().default(0),
   currency: z.string().default("usd"),
@@ -121,7 +121,7 @@ export type Plan = z.infer<typeof planSchema>;
 export const purchaseSchema = z.object({
   userId: z.string(),
   videoId: z.string(),
-  stripePaymentId: z.string().nullable().default(null),
+  polarOrderId: z.string().nullable().default(null),
   amount: z.number().default(0),
   currency: z.string().default("usd"),
   createdAt: z.number(),
@@ -134,8 +134,8 @@ export const registrationModes = ["open", "invite", "closed"] as const;
 export type RegistrationMode = (typeof registrationModes)[number];
 
 export const settingsSchema = z.object({
-  siteName: z.string().default("BehindTheCode"),
-  tagline: z.string().default("A beautiful home for your videos."),
+  siteName: z.string().default("Behind The Code"),
+  tagline: z.string().default("An open-source video platform."),
   logoUrl: z.string().nullable().default(null),
   faviconUrl: z.string().nullable().default(null),
   accentColor: z.string().default("#8b5cf6"),
@@ -161,6 +161,8 @@ export const settingsSchema = z.object({
   defaultAccess: z.enum(accessLevels).default("free"),
   currency: z.string().default("usd"),
   analyticsId: z.string().default(""),
+  livePlaybackId: z.string().default(""),
+  liveTitle: z.string().default(""),
   updatedAt: z.number().default(() => Date.now()),
 });
 export type Settings = z.infer<typeof settingsSchema>;

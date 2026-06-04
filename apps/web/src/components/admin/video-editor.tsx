@@ -313,7 +313,7 @@ export function VideoEditor({
 
             {video.publishStatus === "published" && (
               <Link
-                href={`/watch/${video.slug}`}
+                href={`/v/${video.slug}`}
                 target="_blank"
                 className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
               >

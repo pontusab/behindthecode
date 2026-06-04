@@ -3,6 +3,7 @@
 import {
   Area,
   AreaChart,
+  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -21,19 +22,30 @@ export function ViewsChart({
         margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
       >
         <defs>
-          <linearGradient id="views" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="0%"
-              stopColor="var(--color-primary)"
-              stopOpacity={0.4}
+          <pattern
+            id="viewsRaster"
+            width="8"
+            height="8"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(45)"
+          >
+            <rect width="8" height="8" fill="transparent" />
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="8"
+              stroke="var(--color-foreground)"
+              strokeWidth="1"
+              strokeOpacity="0.14"
             />
-            <stop
-              offset="100%"
-              stopColor="var(--color-primary)"
-              stopOpacity={0}
-            />
-          </linearGradient>
+          </pattern>
         </defs>
+        <CartesianGrid
+          vertical={false}
+          stroke="var(--color-border)"
+          strokeDasharray="4 4"
+        />
         <XAxis
           dataKey="date"
           tickFormatter={(d: string) => d.slice(5)}
@@ -53,7 +65,7 @@ export function ViewsChart({
           contentStyle={{
             background: "var(--color-popover)",
             border: "1px solid var(--color-border)",
-            borderRadius: 12,
+            borderRadius: 0,
             fontSize: 12,
           }}
           labelStyle={{ color: "var(--color-foreground)" }}
@@ -61,9 +73,16 @@ export function ViewsChart({
         <Area
           type="monotone"
           dataKey="views"
-          stroke="var(--color-primary)"
-          strokeWidth={2}
-          fill="url(#views)"
+          stroke="var(--color-foreground)"
+          strokeWidth={1.5}
+          fill="url(#viewsRaster)"
+          dot={false}
+          activeDot={{
+            r: 3,
+            fill: "var(--color-foreground)",
+            stroke: "var(--color-background)",
+            strokeWidth: 2,
+          }}
         />
       </AreaChart>
     </ResponsiveContainer>

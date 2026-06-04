@@ -3,10 +3,8 @@ import {
   CategoryManager,
   type CategoryRow,
 } from "@/components/admin/category-manager";
-import { requireAdmin } from "@/lib/session";
 
 export default async function AdminCategoriesPage() {
-  await requireAdmin();
   const categories = await categoryRepo.listCategories();
   const rows: CategoryRow[] = await Promise.all(
     categories.map(async (c) => ({
@@ -20,7 +18,7 @@ export default async function AdminCategoriesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Categories</h1>
+        <h1 className="font-serif text-2xl font-medium tracking-tight">Categories</h1>
         <p className="text-sm text-muted-foreground">
           Organize your videos into browsable sections.
         </p>

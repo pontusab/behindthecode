@@ -3,7 +3,7 @@ import { cn } from "#lib/utils";
 
 export function Logo({
   className,
-  label = "BehindTheCode",
+  label = "Behind The Code",
   logoUrl,
 }: {
   className?: string;

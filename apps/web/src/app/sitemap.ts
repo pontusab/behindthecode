@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
 
     const videoRoutes: MetadataRoute.Sitemap = videos.map((v) => ({
-      url: `${base}/watch/${v.slug}`,
+      url: `${base}/v/${v.slug}`,
       lastModified: new Date(v.updatedAt),
       changeFrequency: "weekly",
       priority: 0.8,

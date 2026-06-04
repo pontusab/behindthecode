@@ -92,7 +92,7 @@ create table public.videos (
   tags              text[] not null default '{}',
   access            text not null default 'free' check (access in ('free','subscribers','purchase')),
   required_plan_ids text[] not null default '{}',
-  stripe_price_id   text,
+  polar_product_id  text,
   price_amount      integer,
   visibility        text not null default 'public' check (visibility in ('public','unlisted')),
   view_count        bigint not null default 0,
@@ -174,10 +174,10 @@ create policy "users manage own likes"
 -- ===========================================================================
 create table public.plans (
   id              uuid primary key default gen_random_uuid(),
-  name            text not null,
-  description     text not null default '',
-  stripe_price_id text not null,
-  interval        text not null default 'month' check (interval in ('month','year')),
+  name             text not null,
+  description      text not null default '',
+  polar_product_id text not null,
+  interval         text not null default 'month' check (interval in ('month','year')),
   amount          integer not null default 0,
   currency        text not null default 'usd',
   created_at      timestamptz not null default now()
@@ -192,7 +192,7 @@ create policy "plans are public" on public.plans for select using (true);
 create table public.purchases (
   user_id          uuid not null references public.profiles (id) on delete cascade,
   video_id         uuid not null references public.videos (id) on delete cascade,
-  stripe_payment_id text,
+  polar_order_id   text,
   amount           integer not null default 0,
   currency         text not null default 'usd',
   created_at       timestamptz not null default now(),
@@ -208,7 +208,7 @@ create policy "users read own purchases"
 -- ===========================================================================
 create table public.billing (
   user_id            uuid primary key references public.profiles (id) on delete cascade,
-  stripe_customer_id text unique,
+  polar_customer_id  text unique,
   status             text,
   plan_id            uuid references public.plans (id) on delete set null,
   current_period_end bigint,
@@ -245,7 +245,7 @@ alter table public.daily_views enable row level security;
 -- no public policy: admin reads via service role only
 
 -- ===========================================================================
--- processed_webhooks (idempotency for Mux + Stripe)
+-- processed_webhooks (idempotency for Mux + Polar)
 -- ===========================================================================
 create table public.processed_webhooks (
   id         text primary key,

@@ -1,6 +1,5 @@
 "use client";
 
-import { Logo } from "@btc/ui/components/logo";
 import {
   Sidebar,
   SidebarContent,
@@ -8,7 +7,6 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -26,8 +24,16 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ComponentType } from "react";
 
-const NAV = [
+type NavItem = {
+  href: string;
+  label: string;
+  icon: ComponentType<{ className?: string }>;
+  exact?: boolean;
+};
+
+const NAV: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/videos", label: "Videos", icon: Video },
   { href: "/admin/videos/new", label: "Upload", icon: Upload },
@@ -36,7 +42,7 @@ const NAV = [
   { href: "/admin/users", label: "Users", icon: Users },
 ];
 
-const SETTINGS_NAV = [
+const SETTINGS_NAV: NavItem[] = [
   { href: "/admin/plans", label: "Monetization", icon: CreditCard },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
@@ -48,22 +54,25 @@ export function AdminSidebar({
 }) {
   const pathname = usePathname();
 
-  const isActive = (href: string, exact?: boolean) =>
-    exact
-      ? pathname === href
-      : pathname === href || pathname.startsWith(`${href}/`);
-
   const settingsNav = monetizationEnabled
     ? SETTINGS_NAV
     : SETTINGS_NAV.filter((i) => i.href !== "/admin/plans");
 
+  // Pick the single most-specific matching item so only one entry is active
+  // (e.g. /admin/videos/new highlights "Upload", not "Videos").
+  const matches = (href: string, exact?: boolean) =>
+    exact
+      ? pathname === href
+      : pathname === href || pathname.startsWith(`${href}/`);
+
+  const activeHref = [...NAV, ...settingsNav]
+    .filter((i) => matches(i.href, i.exact))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
+
+  const isActive = (href: string) => href === activeHref;
+
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <Link href="/admin" className="px-2 py-1.5">
-          <Logo />
-        </Link>
-      </SidebarHeader>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Manage</SidebarGroupLabel>
@@ -73,7 +82,8 @@ export function AdminSidebar({
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
-                    isActive={isActive(item.href, item.exact)}
+                    isActive={isActive(item.href)}
+                    tooltip={item.label}
                   >
                     <Link href={item.href}>
                       <item.icon />
@@ -91,7 +101,11 @@ export function AdminSidebar({
             <SidebarMenu>
               {settingsNav.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild isActive={isActive(item.href)}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive(item.href)}
+                    tooltip={item.label}
+                  >
                     <Link href={item.href}>
                       <item.icon />
                       <span>{item.label}</span>
@@ -106,7 +120,7 @@ export function AdminSidebar({
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild tooltip="Back to site">
               <Link href="/">
                 <Home />
                 <span>Back to site</span>

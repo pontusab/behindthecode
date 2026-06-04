@@ -1,7 +1,7 @@
 import { json, requireApiUser } from "@/lib/api";
 import { getBilling } from "@/lib/billing";
 import { monetizationEnabled } from "@/lib/entitlements";
-import { appUrl, getStripe } from "@/lib/stripe";
+import { getPolar } from "@/lib/polar";
 
 export async function POST() {
   if (!monetizationEnabled)
@@ -10,18 +10,17 @@ export async function POST() {
   if ("response" in auth) return auth.response;
 
   const billing = await getBilling(auth.user.id);
-  if (!billing?.stripeCustomerId) {
+  if (!billing?.polarCustomerId) {
     return json({ error: "No billing account found" }, 400);
   }
 
   try {
-    const session = await getStripe().billingPortal.sessions.create({
-      customer: billing.stripeCustomerId,
-      return_url: `${appUrl()}/account`,
+    const session = await getPolar().customerSessions.create({
+      externalCustomerId: auth.user.id,
     });
-    return json({ url: session.url });
+    return json({ url: session.customerPortalUrl });
   } catch (err) {
-    console.error("[stripe portal]", err);
+    console.error("[polar portal]", err);
     return json({ error: "Could not open billing portal" }, 500);
   }
 }

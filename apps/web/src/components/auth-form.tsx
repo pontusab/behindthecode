@@ -6,10 +6,21 @@ import { Label } from "@btc/ui/components/label";
 import { toast } from "@btc/ui/components/toaster";
 import { Loader2, Mail } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import type { AuthMethods } from "@/lib/auth-methods";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+
+/**
+ * Read the post-auth redirect target lazily from the URL at call time. Doing
+ * this inside handlers (instead of `useSearchParams()` during render) keeps the
+ * form fully server-rendered/static rather than hidden behind a Suspense
+ * boundary until hydration.
+ */
+function getRedirectTo(): string {
+  if (typeof window === "undefined") return "/";
+  return new URLSearchParams(window.location.search).get("redirect") || "/";
+}
 
 export function AuthForm({
   mode,
@@ -19,8 +30,6 @@ export function AuthForm({
   methods: AuthMethods;
 }) {
   const router = useRouter();
-  const params = useSearchParams();
-  const redirectTo = params.get("redirect") || "/";
   const supabase = createSupabaseBrowserClient();
   const [loading, setLoading] = React.useState<string | null>(null);
   const [name, setName] = React.useState("");
@@ -51,7 +60,7 @@ export function AuthForm({
         });
         if (error) throw new Error(error.message);
       }
-      router.push(redirectTo);
+      router.push(getRedirectTo());
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -60,14 +69,14 @@ export function AuthForm({
     }
   }
 
-  async function onSocial(provider: "google" | "github") {
+  async function onSocial(provider: "google" | "twitter") {
     setLoading(provider);
     try {
       const origin = window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
+          redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(getRedirectTo())}`,
         },
       });
       if (error) throw new Error(error.message);
@@ -88,7 +97,7 @@ export function AuthForm({
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
+          emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(getRedirectTo())}`,
         },
       });
       if (error) throw new Error(error.message);
@@ -100,12 +109,16 @@ export function AuthForm({
     }
   }
 
-  const anySocial = methods.google || methods.github;
+  const anySocial = methods.google || methods.x;
+  const bothSocial = methods.google && methods.x;
+
+  const inputClass =
+    "bg-transparent dark:bg-transparent shadow-none [-webkit-autofill]:bg-transparent autofill:bg-transparent autofill:shadow-[inset_0_0_0_1000px_transparent]";
 
   return (
     <div className="space-y-5">
       {anySocial && (
-        <div className="grid gap-2">
+        <div className={bothSocial ? "grid grid-cols-2 gap-3" : "grid gap-3"}>
           {methods.google && (
             <Button
               variant="outline"
@@ -118,32 +131,32 @@ export function AuthForm({
               ) : (
                 <GoogleIcon />
               )}
-              Continue with Google
+              {bothSocial ? "Google" : "Continue with Google"}
             </Button>
           )}
-          {methods.github && (
+          {methods.x && (
             <Button
               variant="outline"
               className="w-full"
               disabled={!!loading}
-              onClick={() => onSocial("github")}
+              onClick={() => onSocial("twitter")}
             >
-              {loading === "github" ? (
+              {loading === "twitter" ? (
                 <Loader2 className="size-4 animate-spin" />
               ) : (
-                <GitHubIcon />
+                <XIcon />
               )}
-              Continue with GitHub
+              {bothSocial ? "X" : "Continue with X"}
             </Button>
           )}
         </div>
       )}
 
       {anySocial && (
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="h-px flex-1 bg-border" />
+        <div className="flex items-center gap-3 text-xs text-btc-muted">
+          <span className="h-px flex-1 bg-btc-border" />
           or
-          <span className="h-px flex-1 bg-border" />
+          <span className="h-px flex-1 bg-btc-border" />
         </div>
       )}
 
@@ -153,6 +166,7 @@ export function AuthForm({
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
+              className={inputClass}
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -165,6 +179,7 @@ export function AuthForm({
           <Input
             id="email"
             type="email"
+            className={inputClass}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -176,6 +191,7 @@ export function AuthForm({
           <Input
             id="password"
             type="password"
+            className={inputClass}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -248,10 +264,10 @@ function GoogleIcon() {
   );
 }
 
-function GitHubIcon() {
+function XIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="size-4" fill="currentColor">
-      <path d="M12 1a11 11 0 0 0-3.48 21.44c.55.1.75-.24.75-.53v-1.86c-3.06.67-3.7-1.48-3.7-1.48-.5-1.27-1.22-1.61-1.22-1.61-1-.69.07-.67.07-.67 1.11.08 1.69 1.14 1.69 1.14.98 1.69 2.58 1.2 3.21.92.1-.71.39-1.2.7-1.48-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.91 0 0 .93-.3 3.05 1.13a10.6 10.6 0 0 1 5.56 0c2.12-1.43 3.05-1.13 3.05-1.13.6 1.51.22 2.63.11 2.91.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.16-5.03 5.43.4.34.75 1.01.75 2.04v3.03c0 .3.2.64.76.53A11 11 0 0 0 12 1Z" />
+    <svg viewBox="0 0 24 24" className="size-3.5" fill="currentColor" aria-hidden>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z" />
     </svg>
   );
 }

@@ -5,7 +5,7 @@ import type { Purchase } from "../types";
 export async function recordPurchase(input: {
   userId: string;
   videoId: string;
-  stripePaymentId?: string | null;
+  polarOrderId?: string | null;
   amount?: number;
   currency?: string;
 }): Promise<Purchase> {
@@ -15,7 +15,7 @@ export async function recordPurchase(input: {
       {
         user_id: input.userId,
         video_id: input.videoId,
-        stripe_payment_id: input.stripePaymentId ?? null,
+        polar_order_id: input.polarOrderId ?? null,
         amount: input.amount ?? 0,
         currency: input.currency ?? "usd",
       },

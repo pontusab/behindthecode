@@ -31,7 +31,7 @@ export async function listPlans(): Promise<Plan[]> {
 export async function createPlan(input: {
   name: string;
   description?: string;
-  stripePriceId: string;
+  polarProductId: string;
   interval?: PlanInterval;
   amount?: number;
   currency?: string;
@@ -41,7 +41,7 @@ export async function createPlan(input: {
     .insert({
       name: input.name,
       description: input.description ?? "",
-      stripe_price_id: input.stripePriceId,
+      polar_product_id: input.polarProductId,
       interval: input.interval ?? "month",
       amount: input.amount ?? 0,
       currency: input.currency ?? "usd",
@@ -60,8 +60,8 @@ export async function updatePlan(
   const update: PlanUpdate = {};
   if (patch.name !== undefined) update.name = patch.name;
   if (patch.description !== undefined) update.description = patch.description;
-  if (patch.stripePriceId !== undefined)
-    update.stripe_price_id = patch.stripePriceId;
+  if (patch.polarProductId !== undefined)
+    update.polar_product_id = patch.polarProductId;
   if (patch.interval !== undefined) update.interval = patch.interval;
   if (patch.amount !== undefined) update.amount = patch.amount;
   if (patch.currency !== undefined) update.currency = patch.currency;
@@ -78,13 +78,13 @@ export async function deletePlan(id: string): Promise<void> {
   await getDb().from("plans").delete().eq("id", id);
 }
 
-export async function findPlanByPriceId(
-  stripePriceId: string,
+export async function findPlanByProductId(
+  polarProductId: string,
 ): Promise<Plan | null> {
   const { data } = await getDb()
     .from("plans")
     .select("*")
-    .eq("stripe_price_id", stripePriceId)
+    .eq("polar_product_id", polarProductId)
     .limit(1)
     .maybeSingle();
   return data ? rowToPlan(data) : null;
