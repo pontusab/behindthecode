@@ -1,6 +1,4 @@
-import { cacheTags } from "@btc/db";
-import { bust, json } from "@/lib/api";
-import { revalidatePath } from "next/cache";
+import { bustCatalog, json } from "@/lib/api";
 
 /**
  * Busts catalog cache tags and revalidates the homepage.
@@ -16,8 +14,7 @@ export async function GET(req: Request) {
     if (provided !== secret) return json({ error: "Unauthorized" }, 401);
   }
 
-  bust(cacheTags.videos, cacheTags.categories, cacheTags.tags, cacheTags.settings);
-  revalidatePath("/", "layout");
+  bustCatalog();
 
   return json({ revalidated: true });
 }

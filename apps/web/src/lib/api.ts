@@ -1,5 +1,6 @@
 import "server-only";
-import { revalidateTag } from "next/cache";
+import { cacheTags } from "@btc/db";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { getCurrentUser, isAdmin, type SessionUser } from "./session";
 
@@ -13,6 +14,12 @@ export function json(data: unknown, init?: number | ResponseInit) {
 /** Invalidate one or more cache tags immediately (Next 16 requires a profile). */
 export function bust(...tags: string[]) {
   for (const tag of tags) revalidateTag(tag, "max");
+}
+
+/** Bust catalog cache tags and the statically prerendered homepage. */
+export function bustCatalog() {
+  bust(cacheTags.videos, cacheTags.categories, cacheTags.tags);
+  revalidatePath("/");
 }
 
 export function clientFingerprint(req: Request): string {

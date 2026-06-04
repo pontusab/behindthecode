@@ -3,6 +3,7 @@
 import type { Category } from "@btc/db";
 import type { MediaItem } from "@btc/ui";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { CategoryRow } from "@/components/home/category-row";
 import { SearchIcon } from "@/components/home/icons";
@@ -27,13 +28,13 @@ export function VideoBrowser({
   categories,
   sections,
   siteName,
-  activeSlug = "all",
 }: {
   categories: Category[];
   sections: BrowserSection[];
   siteName: string;
-  activeSlug?: string;
 }) {
+  const searchParams = useSearchParams();
+  const activeSlug = searchParams.get("category") ?? "all";
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 

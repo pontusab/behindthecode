@@ -82,6 +82,61 @@ export type FeedResult = {
   nextOffset: number;
 };
 
+export type HomeSection = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  items: MediaItem[];
+  total: number;
+};
+
+export type HomeCatalog = {
+  categories: Awaited<ReturnType<typeof getCategoriesCached>>;
+  sections: HomeSection[];
+};
+
+/** Homepage catalog — prerendered at build; revalidated via cache tags. */
+export async function getHomeCatalogCached(): Promise<HomeCatalog> {
+  "use cache";
+  cacheTag(cacheTags.videos, cacheTags.categories);
+  if (!isDbConfigured()) {
+    return { categories: [], sections: [] };
+  }
+
+  const categories = await categoryRepo.listCategories();
+  const map = Object.fromEntries(categories.map((c) => [c.id, c.name]));
+
+  const allSections = await Promise.all(
+    categories.slice(0, 6).map(async (cat): Promise<HomeSection> => {
+      const page = await videoRepo.listPublished({
+        categoryId: cat.id,
+        sort: "recent",
+        limit: 8,
+      });
+      return {
+        id: cat.id,
+        name: cat.name,
+        slug: cat.slug,
+        description: cat.description,
+        items: page.items.map((v) =>
+          toMediaItem(v, v.categoryId ? map[v.categoryId] : null),
+        ),
+        total: page.total,
+      };
+    }),
+  );
+
+  const sections = allSections.filter((s) => s.items.length > 0);
+  // Short TTL while empty (e.g. first deploy before seed) so the feed recovers quickly.
+  if (sections.length > 0) {
+    cacheLife("hours");
+  } else {
+    cacheLife("minutes");
+  }
+  return { categories, sections };
+}
+
 export async function getFeed(opts: {
   sort?: VideoSort;
   offset?: number;

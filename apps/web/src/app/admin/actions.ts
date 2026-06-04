@@ -16,13 +16,9 @@ import {
 } from "@btc/db";
 import { deleteAsset } from "@btc/mux";
 import { revalidatePath } from "next/cache";
-import { bust } from "@/lib/api";
+import { bust, bustCatalog } from "@/lib/api";
 import { requireAdmin } from "@/lib/session";
 import { countAdmins, setUserBanned, setUserRole } from "@/lib/users";
-
-function bustCatalog() {
-  bust(cacheTags.videos, cacheTags.categories, cacheTags.tags);
-}
 
 /* ───────────────────────── Videos ───────────────────────── */
 

@@ -1,5 +1,5 @@
 import { cacheTags, videoRepo } from "@btc/db";
-import { bust, json } from "@/lib/api";
+import { bust, bustCatalog, json } from "@/lib/api";
 
 /**
  * Publishes scheduled videos whose time has arrived.
@@ -28,7 +28,7 @@ export async function GET(req: Request) {
   }
 
   if (published.length > 0) {
-    bust(cacheTags.videos, cacheTags.categories);
+    bustCatalog();
   }
 
   return json({ published: published.length, ids: published });
