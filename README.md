@@ -5,6 +5,16 @@ brand channel rather than a community site. Built with Next.js 16 (Cache
 Components), Mux, Supabase (Postgres + Auth + Storage), a minimal monochrome
 shadcn-style UI, Tiptap authoring, and optional Stripe monetization.
 
+## Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fpontusab%2Fbehindthecode&root-directory=apps%2Fweb&project-name=behindthecode&repository-name=behindthecode&env=NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,SUPABASE_SECRET_KEY,MUX_TOKEN_ID,MUX_TOKEN_SECRET,MUX_WEBHOOK_SECRET,NEXT_PUBLIC_APP_URL,CRON_SECRET&envDescription=Core%20Supabase%20%2B%20Mux%20credentials%20required%20to%20boot.%20Optional%20OAuth%2C%20AI%20moderation%20and%20Stripe%20vars%20can%20be%20added%20later.&envLink=https%3A%2F%2Fgithub.com%2Fpontusab%2Fbehindthecode%2Fblob%2Fmain%2F.env.example)
+
+One click clones the repo, prompts for the **Core** environment variables, and
+builds from `apps/web`. You still need a **Supabase project** (for the database
+schema) and a **Mux account** first — see [Deploying](#deploying) for the full
+checklist, including the Mux webhook, scheduled-publish cron, and optional
+Stripe setup.
+
 ## Stack
 
 - **Monorepo:** Turborepo + Bun workspaces
